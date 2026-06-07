@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pon Launcher | Загрузка</title>
+    <style>
+        /* Системные переменные в стиле iOS */
+        :root {
+            --bg-color: #000000;
+            --glass-bg: rgba(28, 28, 30, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #FFFFFF;
+            --text-secondary: #EBEBF599; /* Системный серый iOS в темной теме */
+            --accent-blue: #0A84FF; /* Системный синий iOS */
+            --accent-blue-hover: #0070E0;
+            /* Системный шрифт Apple */
+            --font-ios: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-ios);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            /* Легкий градиент на фоне для имитации обоев iOS */
+            background-image: radial-gradient(circle at 50% 0%, #1a1a24 0%, #000000 70%);
+        }
+
+        /* Плавающее меню вкладок (в стиле Dynamic Island / Dock) */
+        .ios-nav {
+            position: fixed;
+            top: 24px;
+            display: flex;
+            gap: 8px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            padding: 6px;
+            border-radius: 40px;
+            border: 1px solid var(--glass-border);
+            z-index: 100;
+        }
+
+        .nav-tab {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-tab.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+        }
+
+        .nav-tab:hover:not(.active) {
+            color: var(--text-primary);
+        }
+
+        /* Основной контент */
+        main {
+            margin-top: 140px;
+            width: 100%;
+            max-width: 800px;
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Заголовки */
+        .hero-title {
+            font-size: 56px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .hero-subtitle {
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            max-width: 500px;
+        }
+
+        /* Главная кнопка Скачать */
+        .download-btn {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 600;
+            padding: 18px 48px;
+            border-radius: 30px;
+            transition: transform 0.1s ease, background-color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 64px;
+        }
+
+        .download-btn:active {
+            transform: scale(0.96);
+            background-color: var(--accent-blue-hover);
+        }
+
+        /* Секция виджетов (Стиль настроек/виджетов iOS 18) */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        .widget-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 24px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Специфичный виджет на всю ширину */
+        .widget-card.full-width {
+            grid-column: span 2;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .widget-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .widget-icon.purple { background: #5E5CE6; }
+        .widget-icon.green { background: #32D74B; }
+
+        .widget-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .widget-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Адаптив для мобилок */
+        @media (max-width: 600px) {
+            .widgets-grid {
+                grid-template-columns: 1fr;
+            }
+            .widget-card.full-width {
+                grid-column: span 1;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .hero-title {
+                font-size: 42px;
+            }
+            .ios-nav {
+                width: 90%;
+                justify-content: space-between;
+            }
+            .nav-tab {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Плавающее меню -->
+    <nav class="ios-nav">
+        <a href="#" class="nav-tab active">Загрузка</a>
+        <a href="https://ponlauncher.shop" class="nav-tab">Магазин</a>
+        <a href="#" class="nav-tab">Обновления</a>
+        <a href="#" class="nav-tab">Профиль</a>
+    </nav>
+
+    <!-- Основной экран -->
+    <main>
+        <h1 class="hero-title">Pon Launcher</h1>
+        <p class="hero-subtitle">Новый уровень взаимодействия с играми. Легкий, быстрый и абсолютно твой.</p>
+
+        <!-- Системная кнопка -->
+        <a href="#" class="download-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Скачать для Windows
+        </a>
+
+        <!-- Виджеты в стиле iOS -->
+        <div class="widgets-grid">
+            
+            <div class="widget-card">
+                <div class="widget-icon">⚡️</div>
+                <div>
+                    <h3 class="widget-title">Системная интеграция</h3>
+                    <p class="widget-text">Работает плавно и без задержек, как нативное приложение.</p>
+                </div>
+            </div>
+
+            <div class="widget-card">
+                <div class="widget-icon purple">👥</div>
+                <div>
+                    <h3 class="widget-title">Твои друзья</h3>
+                    <p class="widget-text">Синхронизация профилей и удобный список друзей онлайн.</p>
+                </div>
+            </div>
+
+            <div class="widget-card full-width">
+                <div>
+                    <h3 class="widget-title">Встроенный магазин</h3>
+                    <p class="widget-text">Получай доступ к новинкам и покупай напрямую через лаунчер.</p>
+                </div>
+                <div class="widget-icon green">🛒</div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>{\rtf1}
