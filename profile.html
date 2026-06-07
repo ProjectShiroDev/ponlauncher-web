@@ -4,27 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pon Launcher | Профиль</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --bg-color: #000000; --glass-bg: rgba(28, 28, 30, 0.65); --glass-border: rgba(255, 255, 255, 0.08); --text-primary: #FFFFFF; --text-secondary: #EBEBF599; --accent-blue: #0A84FF; --accent-blue-hover: #0070E0; --font-ios: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        :root { --bg-color: #000000; --glass-bg: rgba(28, 28, 30, 0.65); --glass-border: rgba(255, 255, 255, 0.08); --text-primary: #FFFFFF; --text-secondary: #EBEBF599; --accent-blue: #0A84FF; --accent-blue-hover: #0070E0; --accent-red: #FF453A; --font-ios: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-ios); -webkit-font-smoothing: antialiased; }
         body { background-color: var(--bg-color); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; background-image: radial-gradient(circle at 50% 0%, #1a1a24 0%, #000000 70%); }
         .ios-nav { position: fixed; top: 24px; display: flex; gap: 8px; background: var(--glass-bg); backdrop-filter: blur(25px) saturate(200%); -webkit-backdrop-filter: blur(25px) saturate(200%); padding: 6px; border-radius: 40px; border: 1px solid var(--glass-border); z-index: 100; }
-        .nav-tab { color: var(--text-secondary); text-decoration: none; padding: 10px 20px; border-radius: 30px; font-size: 15px; font-weight: 500; transition: all 0.2s ease; }
+        .nav-tab { color: var(--text-secondary); text-decoration: none; padding: 10px 20px; border-radius: 30px; font-size: 15px; font-weight: 500; transition: all 0.2s ease; cursor: pointer; }
         .nav-tab.active { background-color: rgba(255, 255, 255, 0.15); color: var(--text-primary); }
         .nav-tab:hover:not(.active) { color: var(--text-primary); }
         main { margin-top: 140px; width: 100%; max-width: 800px; padding: 0 24px; display: flex; flex-direction: column; align-items: center; flex: 1; text-align: center; animation: fadeIn 0.3s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .hero-title { font-size: 56px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
         .hero-subtitle { font-size: 22px; font-weight: 400; color: var(--text-secondary); margin-bottom: 48px; max-width: 500px; }
-        .widgets-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%; margin-bottom: 60px; }
-        .widget-card { background: var(--glass-bg); backdrop-filter: blur(20px) saturate(150%); border: 1px solid var(--glass-border); border-radius: 24px; padding: 24px; text-align: left; display: flex; flex-direction: column; gap: 12px; }
-        .widget-card.full-width { grid-column: span 2; flex-direction: row; align-items: center; justify-content: space-between; }
-        .widget-icon { width: 40px; height: 40px; background: var(--accent-blue); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        .widget-icon.purple { background: #5E5CE6; } .widget-icon.gray { background: #8E8E93; }
-        .widget-title { font-size: 17px; font-weight: 600; color: var(--text-primary); }
-        .widget-text { font-size: 15px; color: var(--text-secondary); line-height: 1.4; }
+        
+        /* Стили для карточек логина и профиля */
+        .auth-container { background: var(--glass-bg); backdrop-filter: blur(20px) saturate(150%); border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 60px; }
+        .input-field { background: rgba(0, 0, 0, 0.5); border: 1px solid var(--glass-border); color: #fff; padding: 16px 20px; border-radius: 16px; font-size: 16px; outline: none; transition: border-color 0.2s; width: 100%; }
+        .input-field:focus { border-color: var(--accent-blue); }
+        .btn { background-color: var(--accent-blue); color: #ffffff; border: none; font-size: 17px; font-weight: 600; padding: 16px; border-radius: 16px; cursor: pointer; transition: transform 0.1s ease, background-color 0.2s ease; width: 100%; }
+        .btn:active { transform: scale(0.96); background-color: var(--accent-blue-hover); }
+        .btn-outline { background-color: transparent; border: 1px solid var(--accent-blue); color: var(--accent-blue); }
+        .btn-danger { background-color: transparent; border: 1px solid var(--accent-red); color: var(--accent-red); margin-top: 10px;}
+
+        /* Информация о профиле */
+        .profile-avatar { width: 80px; height: 80px; background: linear-gradient(135deg, #5E5CE6, #0A84FF); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+        .profile-name { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+        .profile-id { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; word-break: break-all; }
+
         footer { width: 100%; text-align: center; padding: 30px 20px; color: var(--text-secondary); font-size: 14px; border-top: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); margin-top: 40px; }
-        @media (max-width: 600px) { .widgets-grid { grid-template-columns: 1fr; } .widget-card.full-width { grid-column: span 1; flex-direction: column; align-items: flex-start; } .hero-title { font-size: 42px; } .ios-nav { width: 90%; justify-content: space-between; } .nav-tab { padding: 10px 12px; font-size: 13px; } }
     </style>
 </head>
 <body>
@@ -37,24 +45,23 @@
     </nav>
 
     <main>
-        <h1 class="hero-title">Твой профиль</h1>
-        <p class="hero-subtitle">Управляй аккаунтом, аватаркой и списком друзей в один клик.</p>
+        <h1 class="hero-title" id="page-title">Твой профиль</h1>
+        <p class="hero-subtitle" id="page-subtitle">Войди в аккаунт, чтобы управлять своими данными.</p>
 
-        <div class="widgets-grid">
-            <div class="widget-card">
-                <div class="widget-icon purple">👤</div>
-                <div>
-                    <h3 class="widget-title">Кастомизация</h3>
-                    <p class="widget-text">Меняй никнейм и аватарку прямо в настройках клиента.</p>
-                </div>
-            </div>
-            <div class="widget-card">
-                <div class="widget-icon gray">🎮</div>
-                <div>
-                    <h3 class="widget-title">Библиотека</h3>
-                    <p class="widget-text">Все твои игры и статистика хранятся в облаке.</p>
-                </div>
-            </div>
+        <div id="login-section" class="auth-container">
+            <input type="email" id="email-input" class="input-field" placeholder="Email">
+            <input type="password" id="password-input" class="input-field" placeholder="Пароль">
+            <button class="btn" onclick="signIn()">Войти в аккаунт</button>
+            <p id="error-msg" style="color: var(--accent-red); font-size: 14px; display: none;"></p>
+        </div>
+
+        <div id="profile-section" class="auth-container" style="display: none;">
+            <div class="profile-avatar">🎮</div>
+            <div class="profile-name" id="user-nickname">Загрузка...</div>
+            <div class="profile-id" id="user-id">ID: ...</div>
+            
+            <button class="btn btn-outline" onclick="contactSupport()">Написать в поддержку</button>
+            <button class="btn btn-danger" onclick="signOut()">Выйти</button>
         </div>
     </main>
 
@@ -62,5 +69,91 @@
         &copy; 2026 Pon Launcher. Все права защищены.
     </footer>
 
+    <script>
+        // Конфигурация Supabase со вшитыми ключами проекта
+        const supabaseUrl = 'https://geqjugfrxpuutptfuksf.supabase.co'; 
+        const supabaseKey = 'sb_publishable_KUFzgg28mvhcfh7gKoT_pg_rxjkkU5-';
+        
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        const loginSection = document.getElementById('login-section');
+        const profileSection = document.getElementById('profile-section');
+        const pageSubtitle = document.getElementById('page-subtitle');
+        const errorMsg = document.getElementById('error-msg');
+
+        // Проверка активной сессии при загрузке страницы
+        async function checkSession() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                showProfile(session.user);
+            } else {
+                showLogin();
+            }
+        }
+
+        // Функция входа
+        async function signIn() {
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
+            errorMsg.style.display = 'none';
+
+            if(!email || !password) {
+                showError('Введите email и пароль');
+                return;
+            }
+
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                showError('Ошибка входа. Проверьте данные.');
+                console.error(error);
+            } else {
+                showProfile(data.user);
+            }
+        }
+
+        // Функция выхода
+        async function signOut() {
+            await supabase.auth.signOut();
+            showLogin();
+            document.getElementById('email-input').value = '';
+            document.getElementById('password-input').value = '';
+        }
+
+        // Отображение профиля
+        function showProfile(user) {
+            loginSection.style.display = 'none';
+            profileSection.style.display = 'flex';
+            pageSubtitle.innerText = 'Управляй аккаунтом и списком друзей в один клик.';
+            
+            document.getElementById('user-id').innerText = 'ID: ' + user.id;
+            
+            // Проверяем метаданные пользователя на наличие username, иначе берем часть email до собаки
+            let nickname = user.user_metadata?.username || user.email.split('@')[0];
+            document.getElementById('user-nickname').innerText = nickname;
+        }
+
+        // Отображение формы авторизации
+        function showLogin() {
+            loginSection.style.display = 'flex';
+            profileSection.style.display = 'none';
+            pageSubtitle.innerText = 'Войди в аккаунт, чтобы управлять своими данными.';
+        }
+
+        function showError(msg) {
+            errorMsg.innerText = msg;
+            errorMsg.style.display = 'block';
+        }
+
+        // Форма поддержки
+        function contactSupport() {
+            window.location.href = "mailto:support@ponlauncher.store?subject=Помощь с аккаунтом";
+        }
+
+        checkSession();
+    </script>
 </body>
 </html>
