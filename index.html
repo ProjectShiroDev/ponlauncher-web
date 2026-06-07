@@ -30,7 +30,7 @@
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* Чтобы футер прижимался к низу */
             align-items: center;
             overflow-x: hidden;
             background-image: radial-gradient(circle at 50% 0%, #1a1a24 0%, #000000 70%);
@@ -80,11 +80,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            flex: 1; /* Растягиваем main, чтобы футер ушел вниз */
         }
 
         /* Настройка вкладок контента */
         .tab-content {
-            display: none; /* Скрываем все вкладки по умолчанию */
+            display: none; 
             width: 100%;
             flex-direction: column;
             align-items: center;
@@ -93,7 +94,7 @@
         }
 
         .tab-content.active {
-            display: flex; /* Показываем только активную */
+            display: flex; 
         }
 
         @keyframes fadeIn {
@@ -144,7 +145,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
             width: 100%;
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
 
         .widget-card {
@@ -195,6 +196,19 @@
             line-height: 1.4;
         }
 
+        /* Подвал (Футер) */
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            margin-top: 40px;
+        }
+
         @media (max-width: 600px) {
             .widgets-grid { grid-template-columns: 1fr; }
             .widget-card.full-width { grid-column: span 1; flex-direction: column; align-items: flex-start; }
@@ -206,11 +220,10 @@
 </head>
 <body>
 
-    <!-- Меню. Атрибут data-target указывает, какую секцию открыть -->
+    <!-- Меню с атрибутами data-target -->
     <nav class="ios-nav">
         <div class="nav-tab active" data-target="download">Загрузка</div>
-        <!-- Вкладка Магазина остается обычной ссылкой -->
-        <a href="https://ponlauncher.shop" class="nav-tab" style="color: inherit;">Магазин</a>
+        <div class="nav-tab" data-target="store">Магазин</div>
         <div class="nav-tab" data-target="updates">Обновления</div>
         <div class="nav-tab" data-target="profile">Профиль</div>
     </nav>
@@ -255,7 +268,23 @@
             </div>
         </section>
 
-        <!-- ВКЛАДКА 2: ОБНОВЛЕНИЯ -->
+        <!-- ВКЛАДКА 2: МАГАЗИН -->
+        <section id="store" class="tab-content">
+            <h1 class="hero-title">Магазин</h1>
+            <p class="hero-subtitle">Внутриигровые предметы, скины и эксклюзивные предложения.</p>
+
+            <div class="widgets-grid">
+                <div class="widget-card full-width">
+                    <div>
+                        <h3 class="widget-title">Витрина скоро откроется</h3>
+                        <p class="widget-text" style="margin-top: 8px;">Мы готовим каталог товаров для запуска. Следите за обновлениями!</p>
+                    </div>
+                    <div class="widget-icon green">🛍️</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 3: ОБНОВЛЕНИЯ -->
         <section id="updates" class="tab-content">
             <h1 class="hero-title">Обновления</h1>
             <p class="hero-subtitle">История версий и патчноуты. Будь в курсе всех нововведений.</p>
@@ -275,7 +304,7 @@
             </div>
         </section>
 
-        <!-- ВКЛАДКА 3: ПРОФИЛЬ -->
+        <!-- ВКЛАДКА 4: ПРОФИЛЬ -->
         <section id="profile" class="tab-content">
             <h1 class="hero-title">Твой профиль</h1>
             <p class="hero-subtitle">Управляй аккаунтом, аватаркой и списком друзей в один клик.</p>
@@ -299,22 +328,23 @@
         </section>
     </main>
 
+    <!-- Подвал с авторскими правами -->
+    <footer>
+        &copy; 2026 Pon Launcher. Все права защищены.
+    </footer>
+
     <!-- Скрипт для переключения вкладок -->
     <script>
-        // Находим все кнопки вкладок (кроме ссылок) и все секции контента
         const tabs = document.querySelectorAll('.nav-tab[data-target]');
         const contents = document.querySelectorAll('.tab-content');
 
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                // 1. Убираем класс active у всех вкладок и секций
                 tabs.forEach(t => t.classList.remove('active'));
                 contents.forEach(c => c.classList.remove('active'));
 
-                // 2. Добавляем active нажатой вкладке
                 tab.classList.add('active');
 
-                // 3. Находим нужную секцию по ID и показываем её
                 const targetId = tab.getAttribute('data-target');
                 document.getElementById(targetId).classList.add('active');
             });
