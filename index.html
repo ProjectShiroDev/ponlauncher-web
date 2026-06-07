@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pon Launcher | Загрузка</title>
+    <title>Pon Launcher | Официальный сайт</title>
     <style>
         /* Системные переменные в стиле iOS */
         :root {
@@ -11,10 +11,9 @@
             --glass-bg: rgba(28, 28, 30, 0.65);
             --glass-border: rgba(255, 255, 255, 0.08);
             --text-primary: #FFFFFF;
-            --text-secondary: #EBEBF599; /* Системный серый iOS в темной теме */
-            --accent-blue: #0A84FF; /* Системный синий iOS */
+            --text-secondary: #EBEBF599; 
+            --accent-blue: #0A84FF; 
             --accent-blue-hover: #0070E0;
-            /* Системный шрифт Apple */
             --font-ios: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
@@ -34,11 +33,10 @@
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
-            /* Легкий градиент на фоне для имитации обоев iOS */
             background-image: radial-gradient(circle at 50% 0%, #1a1a24 0%, #000000 70%);
         }
 
-        /* Плавающее меню вкладок (в стиле Dynamic Island / Dock) */
+        /* Плавающее меню вкладок */
         .ios-nav {
             position: fixed;
             top: 24px;
@@ -61,6 +59,7 @@
             font-size: 15px;
             font-weight: 500;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
 
         .nav-tab.active {
@@ -81,7 +80,25 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        /* Настройка вкладок контента */
+        .tab-content {
+            display: none; /* Скрываем все вкладки по умолчанию */
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .tab-content.active {
+            display: flex; /* Показываем только активную */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Заголовки */
@@ -121,7 +138,7 @@
             background-color: var(--accent-blue-hover);
         }
 
-        /* Секция виджетов (Стиль настроек/виджетов iOS 18) */
+        /* Секция виджетов */
         .widgets-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -143,7 +160,6 @@
             gap: 12px;
         }
 
-        /* Специфичный виджет на всю ширину */
         .widget-card.full-width {
             grid-column: span 2;
             flex-direction: row;
@@ -164,6 +180,8 @@
 
         .widget-icon.purple { background: #5E5CE6; }
         .widget-icon.green { background: #32D74B; }
+        .widget-icon.orange { background: #FF9F0A; }
+        .widget-icon.gray { background: #8E8E93; }
 
         .widget-title {
             font-size: 17px;
@@ -177,84 +195,130 @@
             line-height: 1.4;
         }
 
-        /* Адаптив для мобилок */
         @media (max-width: 600px) {
-            .widgets-grid {
-                grid-template-columns: 1fr;
-            }
-            .widget-card.full-width {
-                grid-column: span 1;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .hero-title {
-                font-size: 42px;
-            }
-            .ios-nav {
-                width: 90%;
-                justify-content: space-between;
-            }
-            .nav-tab {
-                padding: 10px 12px;
-                font-size: 13px;
-            }
+            .widgets-grid { grid-template-columns: 1fr; }
+            .widget-card.full-width { grid-column: span 1; flex-direction: column; align-items: flex-start; }
+            .hero-title { font-size: 42px; }
+            .ios-nav { width: 90%; justify-content: space-between; }
+            .nav-tab { padding: 10px 12px; font-size: 13px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Плавающее меню -->
+    <!-- Меню. Атрибут data-target указывает, какую секцию открыть -->
     <nav class="ios-nav">
-        <a href="#" class="nav-tab active">Загрузка</a>
-        <a href="https://ponlauncher.shop" class="nav-tab">Магазин</a>
-        <a href="#" class="nav-tab">Обновления</a>
-        <a href="#" class="nav-tab">Профиль</a>
+        <div class="nav-tab active" data-target="download">Загрузка</div>
+        <!-- Вкладка Магазина остается обычной ссылкой -->
+        <a href="https://ponlauncher.shop" class="nav-tab" style="color: inherit;">Магазин</a>
+        <div class="nav-tab" data-target="updates">Обновления</div>
+        <div class="nav-tab" data-target="profile">Профиль</div>
     </nav>
 
-    <!-- Основной экран -->
     <main>
-        <h1 class="hero-title">Pon Launcher</h1>
-        <p class="hero-subtitle">Новый уровень взаимодействия с играми. Легкий, быстрый и абсолютно твой.</p>
+        <!-- ВКЛАДКА 1: ЗАГРУЗКА -->
+        <section id="download" class="tab-content active">
+            <h1 class="hero-title">Pon Launcher</h1>
+            <p class="hero-subtitle">Новый уровень взаимодействия с играми. Легкий, быстрый и абсолютно твой.</p>
 
-        <!-- Системная кнопка -->
-        <a href="#" class="download-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            Скачать для Windows
-        </a>
+            <a href="#" class="download-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Скачать для Windows
+            </a>
 
-        <!-- Виджеты в стиле iOS -->
-        <div class="widgets-grid">
-            
-            <div class="widget-card">
-                <div class="widget-icon">⚡️</div>
-                <div>
-                    <h3 class="widget-title">Системная интеграция</h3>
-                    <p class="widget-text">Работает плавно и без задержек, как нативное приложение.</p>
+            <div class="widgets-grid">
+                <div class="widget-card">
+                    <div class="widget-icon">⚡️</div>
+                    <div>
+                        <h3 class="widget-title">Системная интеграция</h3>
+                        <p class="widget-text">Работает плавно и без задержек, как нативное приложение.</p>
+                    </div>
+                </div>
+                <div class="widget-card">
+                    <div class="widget-icon purple">👥</div>
+                    <div>
+                        <h3 class="widget-title">Твои друзья</h3>
+                        <p class="widget-text">Синхронизация профилей и удобный список друзей онлайн.</p>
+                    </div>
+                </div>
+                <div class="widget-card full-width">
+                    <div>
+                        <h3 class="widget-title">Встроенный магазин</h3>
+                        <p class="widget-text">Получай доступ к новинкам и покупай напрямую через лаунчер.</p>
+                    </div>
+                    <div class="widget-icon green">🛒</div>
                 </div>
             </div>
+        </section>
 
-            <div class="widget-card">
-                <div class="widget-icon purple">👥</div>
-                <div>
-                    <h3 class="widget-title">Твои друзья</h3>
-                    <p class="widget-text">Синхронизация профилей и удобный список друзей онлайн.</p>
+        <!-- ВКЛАДКА 2: ОБНОВЛЕНИЯ -->
+        <section id="updates" class="tab-content">
+            <h1 class="hero-title">Обновления</h1>
+            <p class="hero-subtitle">История версий и патчноуты. Будь в курсе всех нововведений.</p>
+
+            <div class="widgets-grid">
+                <div class="widget-card full-width">
+                    <div>
+                        <h3 class="widget-title">Версия 1.0.0 (В разработке)</h3>
+                        <p class="widget-text" style="margin-top: 8px;">
+                            • Релиз базового интерфейса Pon Launcher.<br>
+                            • Добавлена вкладка магазина и профиля.<br>
+                            • Подключение системы авторизации и серверов.
+                        </p>
+                    </div>
+                    <div class="widget-icon orange">⚙️</div>
                 </div>
             </div>
+        </section>
 
-            <div class="widget-card full-width">
-                <div>
-                    <h3 class="widget-title">Встроенный магазин</h3>
-                    <p class="widget-text">Получай доступ к новинкам и покупай напрямую через лаунчер.</p>
+        <!-- ВКЛАДКА 3: ПРОФИЛЬ -->
+        <section id="profile" class="tab-content">
+            <h1 class="hero-title">Твой профиль</h1>
+            <p class="hero-subtitle">Управляй аккаунтом, аватаркой и списком друзей в один клик.</p>
+
+            <div class="widgets-grid">
+                <div class="widget-card">
+                    <div class="widget-icon purple">👤</div>
+                    <div>
+                        <h3 class="widget-title">Кастомизация</h3>
+                        <p class="widget-text">Меняй никнейм и аватарку прямо в настройках клиента.</p>
+                    </div>
                 </div>
-                <div class="widget-icon green">🛒</div>
+                <div class="widget-card">
+                    <div class="widget-icon gray">🎮</div>
+                    <div>
+                        <h3 class="widget-title">Библиотека</h3>
+                        <p class="widget-text">Все твои игры и статистика хранятся в облаке.</p>
+                    </div>
+                </div>
             </div>
-
-        </div>
+        </section>
     </main>
 
+    <!-- Скрипт для переключения вкладок -->
+    <script>
+        // Находим все кнопки вкладок (кроме ссылок) и все секции контента
+        const tabs = document.querySelectorAll('.nav-tab[data-target]');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 1. Убираем класс active у всех вкладок и секций
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                // 2. Добавляем active нажатой вкладке
+                tab.classList.add('active');
+
+                // 3. Находим нужную секцию по ID и показываем её
+                const targetId = tab.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+    </script>
 </body>
-</html>{\rtf1}
+</html>
