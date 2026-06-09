@@ -1,58 +1,149 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pon Launcher | Магазин</title>
-    <!-- ВАЖНО: Стили полностью скопированы с index.html -->
+    <title>Pon Launcher | Store</title>
     <style>
-        :root { --bg-color: #000000; --glass-bg: rgba(28, 28, 30, 0.65); --glass-border: rgba(255, 255, 255, 0.08); --text-primary: #FFFFFF; --text-secondary: #EBEBF599; --accent-blue: #0A84FF; --accent-blue-hover: #0070E0; --font-ios: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        :root {
+            --bg-color: #000000;
+            --glass-bg: rgba(28, 28, 30, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(235, 235, 245, 0.55);
+            --accent-blue: #0A84FF;
+            --accent-blue-hover: #0070E0;
+            --font-ios: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-ios); -webkit-font-smoothing: antialiased; }
         body { background-color: var(--bg-color); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; background-image: radial-gradient(circle at 50% 0%, #1a1a24 0%, #000000 70%); }
+
+        /* NAV */
         .ios-nav { position: fixed; top: 24px; display: flex; gap: 8px; background: var(--glass-bg); backdrop-filter: blur(25px) saturate(200%); -webkit-backdrop-filter: blur(25px) saturate(200%); padding: 6px; border-radius: 40px; border: 1px solid var(--glass-border); z-index: 100; }
         .nav-tab { color: var(--text-secondary); text-decoration: none; padding: 10px 20px; border-radius: 30px; font-size: 15px; font-weight: 500; transition: all 0.2s ease; }
         .nav-tab.active { background-color: rgba(255, 255, 255, 0.15); color: var(--text-primary); }
         .nav-tab:hover:not(.active) { color: var(--text-primary); }
-        main { margin-top: 140px; width: 100%; max-width: 800px; padding: 0 24px; display: flex; flex-direction: column; align-items: center; flex: 1; text-align: center; animation: fadeIn 0.3s ease forwards; }
+
+        /* MAIN */
+        main { margin-top: 120px; width: 100%; max-width: 800px; padding: 0 24px; display: flex; flex-direction: column; align-items: center; flex: 1; text-align: center; animation: fadeIn 0.3s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .hero-title { font-size: 56px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
-        .hero-subtitle { font-size: 22px; font-weight: 400; color: var(--text-secondary); margin-bottom: 48px; max-width: 500px; }
-        .widgets-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%; margin-bottom: 60px; }
-        .widget-card { background: var(--glass-bg); backdrop-filter: blur(20px) saturate(150%); border: 1px solid var(--glass-border); border-radius: 24px; padding: 24px; text-align: left; display: flex; flex-direction: column; gap: 12px; }
-        .widget-card.full-width { grid-column: span 2; flex-direction: row; align-items: center; justify-content: space-between; }
-        .widget-icon { width: 40px; height: 40px; background: var(--accent-blue); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        .widget-icon.green { background: #32D74B; }
-        .widget-title { font-size: 17px; font-weight: 600; color: var(--text-primary); }
-        .widget-text { font-size: 15px; color: var(--text-secondary); line-height: 1.4; }
+
+        /* HERO */
+        .hero-title { font-size: 56px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 16px; background: linear-gradient(180deg, #fff 40%, rgba(255,255,255,0.55) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-subtitle { font-size: 20px; font-weight: 400; color: var(--text-secondary); margin-bottom: 56px; max-width: 460px; line-height: 1.5; }
+
+        /* COMING SOON BANNER */
+        .coming-soon-wrap { width: 100%; margin-bottom: 32px; }
+        .coming-soon-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 48px 32px; display: flex; flex-direction: column; align-items: center; gap: 16px; position: relative; overflow: hidden; }
+        .coming-soon-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(10,132,255,0.5), transparent); }
+        .cs-icon { width: 72px; height: 72px; background: rgba(50,215,75,0.15); border: 1px solid rgba(50,215,75,0.25); border-radius: 22px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+        .cs-icon svg { width: 34px; height: 34px; stroke: #32D74B; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+        .cs-badge { display: inline-block; background: rgba(10,132,255,0.15); color: #4da3ff; font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(10,132,255,0.25); letter-spacing: 0.04em; text-transform: uppercase; }
+        .cs-title { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
+        .cs-text { font-size: 16px; color: var(--text-secondary); max-width: 380px; line-height: 1.5; }
+
+        /* PREVIEW CARDS */
+        .preview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; width: 100%; margin-bottom: 60px; }
+        .preview-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 22px; padding: 22px; text-align: left; display: flex; flex-direction: column; gap: 14px; opacity: 0.5; }
+        .preview-card-inner { display: flex; align-items: center; gap: 14px; }
+        .preview-thumb { width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0; }
+        .preview-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+        .preview-sub { font-size: 13px; color: var(--text-secondary); }
+        .preview-price { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .preview-bar { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); width: 100%; }
+        .preview-bar.short { width: 60%; }
+
+        /* FOOTER */
         footer { width: 100%; text-align: center; padding: 30px 20px; color: var(--text-secondary); font-size: 14px; border-top: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); margin-top: 40px; }
-        @media (max-width: 600px) { .widgets-grid { grid-template-columns: 1fr; } .widget-card.full-width { grid-column: span 1; flex-direction: column; align-items: flex-start; } .hero-title { font-size: 42px; } .ios-nav { width: 90%; justify-content: space-between; } .nav-tab { padding: 10px 12px; font-size: 13px; } }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .preview-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 42px; }
+            .ios-nav { width: 90%; justify-content: space-between; }
+            .nav-tab { padding: 10px 12px; font-size: 13px; }
+        }
     </style>
 </head>
 <body>
 
     <nav class="ios-nav">
-        <a href="/download" class="nav-tab">Загрузка</a>
-        <a href="/main" class="nav-tab active">Магазин</a>
-        <a href="/updates" class="nav-tab">Обновления</a>
+        <a href="/download" class="nav-tab">Download</a>
+        <a href="/main" class="nav-tab active">Store</a>
+        <a href="/updates" class="nav-tab">Updates</a>
     </nav>
 
     <main>
-        <h1 class="hero-title">Магазин</h1>
-        <p class="hero-subtitle">Внутриигровые предметы, скины и эксклюзивные предложения.</p>
+        <h1 class="hero-title">Store</h1>
+        <p class="hero-subtitle">In-game items, skins, and exclusive deals — all in one place.</p>
 
-        <div class="widgets-grid">
-            <div class="widget-card full-width">
-                <div>
-                    <h3 class="widget-title">Витрина скоро откроется</h3>
-                    <p class="widget-text" style="margin-top: 8px;">Мы готовим каталог товаров для запуска. Следите за обновлениями!</p>
+        <!-- COMING SOON -->
+        <div class="coming-soon-wrap">
+            <div class="coming-soon-card">
+                <div class="cs-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 0 1-8 0"/>
+                    </svg>
                 </div>
-                <div class="widget-icon green">🛍️</div>
+                <span class="cs-badge">Coming soon</span>
+                <h2 class="cs-title">The storefront is on its way</h2>
+                <p class="cs-text">We're putting together the catalog for launch. Stay tuned for updates!</p>
+            </div>
+        </div>
+
+        <!-- PLACEHOLDER CARDS (ghosted preview) -->
+        <div class="preview-grid">
+            <div class="preview-card">
+                <div class="preview-card-inner">
+                    <div class="preview-thumb" style="background: linear-gradient(135deg, rgba(10,132,255,0.3), rgba(94,92,230,0.2));"></div>
+                    <div>
+                        <div class="preview-title">Item name</div>
+                        <div class="preview-sub">Category</div>
+                    </div>
+                </div>
+                <div class="preview-bar"></div>
+                <div class="preview-bar short"></div>
+            </div>
+            <div class="preview-card">
+                <div class="preview-card-inner">
+                    <div class="preview-thumb" style="background: linear-gradient(135deg, rgba(50,215,75,0.3), rgba(10,132,255,0.15));"></div>
+                    <div>
+                        <div class="preview-title">Item name</div>
+                        <div class="preview-sub">Category</div>
+                    </div>
+                </div>
+                <div class="preview-bar"></div>
+                <div class="preview-bar short"></div>
+            </div>
+            <div class="preview-card">
+                <div class="preview-card-inner">
+                    <div class="preview-thumb" style="background: linear-gradient(135deg, rgba(94,92,230,0.3), rgba(255,55,95,0.15));"></div>
+                    <div>
+                        <div class="preview-title">Item name</div>
+                        <div class="preview-sub">Category</div>
+                    </div>
+                </div>
+                <div class="preview-bar"></div>
+                <div class="preview-bar short"></div>
+            </div>
+            <div class="preview-card">
+                <div class="preview-card-inner">
+                    <div class="preview-thumb" style="background: linear-gradient(135deg, rgba(255,159,10,0.3), rgba(255,55,95,0.2));"></div>
+                    <div>
+                        <div class="preview-title">Item name</div>
+                        <div class="preview-sub">Category</div>
+                    </div>
+                </div>
+                <div class="preview-bar"></div>
+                <div class="preview-bar short"></div>
             </div>
         </div>
     </main>
 
     <footer>
-        &copy; 2026 Pon Launcher. Все права защищены.
+        &copy; 2026 Pon Launcher. All rights reserved.
     </footer>
 
 </body>
