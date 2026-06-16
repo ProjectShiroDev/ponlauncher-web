@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
     <title>PON Launcher | Download — Power On Now</title>
-<meta name="description" content="Download PON Launcher for Windows. A fast, lightweight and free game launcher. Power On Now.">
-<meta name="keywords" content="PON Launcher, download PON Launcher, скачать PON Launcher, game launcher, лаунчер для игр, Power On Now, free game launcher">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="PON Launcher — Power On Now">
-<meta property="og:description" content="A fast, lightweight game launcher for Windows. Download for free.">
-<meta property="og:url" content="https://ponlauncher.store/download">
-<meta property="og:type" content="website">
+    <meta name="description" content="Download PON Launcher for Windows. A fast, lightweight and free game launcher. Power On Now.">
+    <meta name="keywords" content="PON Launcher, download PON Launcher, скачать PON Launcher, game launcher, лаунчер для игр, Power On Now, free game launcher">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="PON Launcher — Power On Now">
+    <meta property="og:description" content="A fast, lightweight game launcher for Windows. Download for free.">
+    <meta property="og:url" content="https://ponlauncher.store/download">
+    <meta property="og:type" content="website">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pon Launcher | Download</title>
@@ -122,7 +120,7 @@
         <p class="hero-subtitle">A lightweight, fast launcher built around you. Everything you need, nothing you don't.</p>
 
         <div class="btn-row">
-            <a href="PonLauncherSetup.exe" class="download-btn">
+            <a href="https://github.com/ProjectShiroDev/pon-launcher-releases/releases/latest" id="download-link" class="download-btn">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                     <polyline points="7 10 12 15 17 10"/>
@@ -132,7 +130,7 @@
             </a>
             <a href="/updates" class="secondary-btn">What's new?</a>
         </div>
-        <p class="meta-text">Windows 10 / 11 &nbsp;·&nbsp; 64-bit &nbsp;·&nbsp; v0.1.0 beta</p>
+        <p class="meta-text" id="meta-text">Windows 10 / 11 &nbsp;·&nbsp; 64-bit &nbsp;·&nbsp; Checking latest version...</p>
 
         <!-- APP PREVIEW -->
         <div class="preview-wrap">
@@ -211,6 +209,43 @@
     <footer>
         &copy; 2026 Pon Launcher. All rights reserved.
     </footer>
+
+    <script>
+        const owner = 'ProjectShiroDev';
+        const repo = 'pon-launcher-releases';
+        
+        const downloadLink = document.getElementById('download-link');
+        const metaText = document.getElementById('meta-text');
+
+        // Set default fallback (always redirects to the latest release page)
+        downloadLink.href = `https://github.com/${owner}/${repo}/releases/latest`;
+
+        // Fetch the latest release info from GitHub API
+        fetch(`https://api.github.com/repos/${owner}/${repo}/releases/latest`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('API limit or network error');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Find the executable asset ending in .exe
+                const exeAsset = data.assets.find(asset => asset.name.endsWith('.exe'));
+                if (exeAsset) {
+                    downloadLink.href = exeAsset.browser_download_url;
+                }
+
+                // Update version label dynamically
+                if (data.tag_name) {
+                    const cleanVersion = data.tag_name.replace(/^v/, '');
+                    metaText.innerHTML = `Windows 10 / 11 &nbsp;·&nbsp; 64-bit &nbsp;·&nbsp; v${cleanVersion}`;
+                }
+            })
+            .catch(error => {
+                console.warn('GitHub API not available, using fallback redirect page:', error.message);
+                metaText.innerHTML = `Windows 10 / 11 &nbsp;·&nbsp; 64-bit &nbsp;·&nbsp; Latest version`;
+            });
+    </script>
 
 </body>
 </html>
